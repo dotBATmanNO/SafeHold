@@ -49,7 +49,7 @@ function Get-CurrentAssociation {
     return $null
 }
 
-function Ensure-RedirectProgId {
+function Initialize-RedirectProgId {
     param([string]$LauncherPath)
 
     $progIdKey = "HKCU:\Software\Classes\SafeHold.Redirect"
@@ -66,7 +66,7 @@ function Ensure-RedirectProgId {
 # ------------------------------------------------------------
 # HTML global templates (Pre/Post)
 # ------------------------------------------------------------
-function Ensure-GlobalHtmlTemplates {
+function Initialize-GlobalHtmlTemplates {
 
     $htmlRoot = "HKCU:\Software\SafeHold\Html"
     if (-not (Test-Path $htmlRoot)) {
@@ -113,7 +113,7 @@ p { margin: 5px 0; }
 # ------------------------------------------------------------
 # Build midt-HTML for extension
 # ------------------------------------------------------------
-function Build-HtmlBody {
+function New-HtmlBody {
     param(
         [string]$Ext,
         [hashtable]$Policy
@@ -152,11 +152,11 @@ function Set-Redirect {
     }
 
     # Lagre midt-HTML
-    $body = Build-HtmlBody -Ext $Ext -Policy $Policy
+    $body = New-HtmlBody -Ext $Ext -Policy $Policy
     Set-ItemProperty -Path $backupKey -Name HtmlBody -Value $body
 
     # Sørg for at redirect-progid finnes
-    Ensure-RedirectProgId -LauncherPath $LauncherPath
+    Initialize-RedirectProgId -LauncherPath $LauncherPath
 
     # Sett redirect
     New-Item -Path $extKey -Force | Out-Null
@@ -203,7 +203,7 @@ function Restore-Association {
 Log "SafeHoldAgent start"
 
 # Sørg for global HTML-ramme
-Ensure-GlobalHtmlTemplates
+Initialize-GlobalHtmlTemplates
 
 # Hent liste over extensions
 $extensionsFqdn = "extensions.$DomainBase"

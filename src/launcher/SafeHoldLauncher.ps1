@@ -4,9 +4,9 @@ param(
 )
 
 # ------------------------------------------------------------
-# Helper: Show fallback message using msg.exe
+# Helper: Write fallback message using msg.exe
 # ------------------------------------------------------------
-function Show-FallbackMessage {
+function Write-FallbackMessage {
     param([string]$Text)
     $escaped = $Text -replace '"','\"'
     Start-Process -FilePath "msg.exe" -ArgumentList "* `"$escaped`"" -WindowStyle Hidden
@@ -33,7 +33,7 @@ function Get-TxtRecord {
 # ------------------------------------------------------------
 $ext = [System.IO.Path]::GetExtension($File).TrimStart('.').ToLower()
 if (-not $ext) {
-    Show-FallbackMessage "SafeHold: Kunne ikke bestemme filtype for $File"
+    Write-FallbackMessage "SafeHold: Kunne ikke bestemme filtype for $File"
     exit
 }
 
@@ -44,7 +44,7 @@ $policyFqdn = "$ext.safehold.internal.test"
 $txt = Get-TxtRecord $policyFqdn
 
 if (-not $txt) {
-    Show-FallbackMessage "SafeHold: Ingen policy for *.$ext*. Filen åpnes ikke via SafeHold."
+    Write-FallbackMessage "SafeHold: Ingen policy for *.$ext*. Filen åpnes ikke via SafeHold."
     exit
 }
 
@@ -76,7 +76,7 @@ try {
     $body = (Get-ItemProperty $backupKey -ErrorAction Stop).HtmlBody
 }
 catch {
-    Show-FallbackMessage "SafeHold: HTML-mal mangler for *.$ext*. Kontakt administrator."
+    Write-FallbackMessage "SafeHold: HTML-mal mangler for *.$ext*. Kontakt administrator."
     exit
 }
 
@@ -95,10 +95,17 @@ Set-Content -Path $temp -Value $fullHtml -Encoding UTF8
 # Try to open in Edge
 # ------------------------------------------------------------
 try {
-    Start-Process "msedge.exe" "file:///$temp"
+    $tempPath = (Get-Item $temp).FullName
+    $fileUri = "file:///$($tempPath -replace '\\','/')"
+    Start-Process -FilePath "msedge.exe" -ArgumentList $fileUri -ErrorAction Stop
 }
 catch {
-    Show-FallbackMessage "SafeHold: Filtypen *.$ext* er blokkert, men Edge kunne ikke åpnes."
+    try {
+        Start-Process -FilePath $temp -ErrorAction Stop
+    }
+    catch {
+        Write-FallbackMessage "SafeHold: Filtypen *.$ext* er blokkert, men Edge og standard nettleser kunne ikke åpnes."
+    }
 }
 
 exit
