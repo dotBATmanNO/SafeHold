@@ -1,1 +1,1 @@
-status=hold;reason=ZIP er midlertidig blokkert;alt=Bruk 7-Zip;url=https://example.com/zip-info
+status=hold;reason=ZIP er midlertidig blokkert;alt=Bruk 7-Zip;url=https://example.com/extinfo/zip

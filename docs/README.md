@@ -22,10 +22,10 @@ Dette diagrammet viser hele SafeHold-flyten fra DNS-policy → agent → registr
                          ┌──────────────────────────────┐
                          │  DNS (policy)                │
                          │                              │
-                         │  extensions.safehold.domain  │
+                         │  extensions.safehold.test    │
                          │      → "pdf;zip;7z"          │
                          │                              │
-                         │  pdf.safehold.domain         │
+                         │  pdf.safehold.test           │
                          │      → "status=hold;..."     │
                          └───────────────┬──────────────┘
                                          │
@@ -83,10 +83,10 @@ Dette diagrammet viser hele SafeHold-flyten fra DNS-policy → agent → registr
 
 Agenten kjører regelmessig og:
 
-1. Leser `extensions.safehold.internal.domain`  
+1. Leser `extensions.safehold.internal.test`  
 2. Stopper umiddelbart hvis DNS ikke svarer (fail-safe)  
 3. For hver EXT i listen:  
-   - Leser `ext.safehold.internal.domain`  
+   - Leser `ext.safehold.internal.test`  
    - Hvis `status=hold` → redirect + backup  
    - Hvis ikke hold → restore  
 4. Rydder opp:  
@@ -113,20 +113,20 @@ SafeHold styres 100 % via DNS TXT-records.
 ### Liste over filtyper
 
 ```
-extensions.safehold.internal.domain → "pdf;zip;7z"
+extensions.safehold.internal.test → "pdf;zip;7z"
 ```
 
 ### Policy for en filtype
 
 ```
-zip.safehold.internal.domain → "status=hold;reason=ZIP blokkert;alt=7-Zip;url=https://..."
+zip.safehold.internal.test → "status=hold;reason=ZIP blokkert;alt=7-Zip;url=https://..."
 ```
 
 ---
 
 ## State-machine
 
-Se `docs/state\-machine/state\-machine.md` for full state-maskin og beslutningslogikk.
+Se `docs/state-machine/state-machine.md` for full state-maskin og beslutningslogikk.
 
 ---
 
@@ -154,7 +154,7 @@ SafeHold/
 │   └── utils/
 ├── docs/
 │   ├── diagrams/
-│   ├── state\-machine/
+│   ├── state-machine/
 │   └── testmatrix/
 ├── dns/
 │   └── examples/

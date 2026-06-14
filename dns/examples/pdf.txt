@@ -1,1 +1,1 @@
-status=ok;reason=PDF er trygg;url=https://example.com/pdf-info
+status=ok;reason=PDF er trygg;url=https://example.com/extinfo/pdf

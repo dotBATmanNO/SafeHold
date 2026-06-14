@@ -47,8 +47,8 @@ SafeHold styres 100% via DNS TXT-records.
 Eksempel:
 
 ```
-extensions.safehold.internal.domain → "pdf;zip;7z"
-zip.safehold.internal.domain → "status=hold;reason=ZIP blokkert;alt=7-Zip"
+extensions.safehold.internal.test → "pdf;zip;7z"
+zip.safehold.internal.test → "status=hold;reason=ZIP blokkert;alt=7-Zip"
 ```
 
 Eksempler ligger i `dns/examples/`.
