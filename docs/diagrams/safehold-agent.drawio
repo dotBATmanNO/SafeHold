@@ -1,0 +1,68 @@
+<mxfile host="app.diagrams.net" modified="2026-06-14T09:15:00Z" agent="SafeHoldAgent" version="24.7.0">
+  <diagram id="safehold-agent-state" name="SafeHoldAgent State Machine">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="start" value="Start (per EXT)" style="ellipse;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="120" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="dnsCheck" value="DNS OK?" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="260" y="70" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="noOp" value="NO-OP" style="rectangle;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="540" y="40" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="extInDns" value="EXT i DNS?" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="260" y="200" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="policyLookup" value="Slå opp EXT-policy" style="rectangle;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="520" y="200" width="240" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="statusHold" value="status=hold?" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="820" y="200" width="160" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="setRedirect" value="SetRedirect" style="rectangle;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="160" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="restore" value="Restore" style="rectangle;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="260" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="cleanupRemoved" value="Cleanup: EXT fjernet fra DNS" style="rectangle;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="260" y="340" width="300" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="cleanupStray" value="Cleanup: Stray redirect" style="rectangle;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="600" y="340" width="300" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="end" value="Ferdig" style="ellipse;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="380" width="120" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell edge="1" source="start" target="dnsCheck" parent="1"/>
+        <mxCell edge="1" source="dnsCheck" target="noOp" value="Nei" parent="1"/>
+        <mxCell edge="1" source="dnsCheck" target="extInDns" value="Ja" parent="1"/>
+        <mxCell edge="1" source="extInDns" target="policyLookup" value="Ja" parent="1"/>
+        <mxCell edge="1" source="extInDns" target="cleanupRemoved" value="Nei" parent="1"/>
+        <mxCell edge="1" source="policyLookup" target="statusHold" parent="1"/>
+        <mxCell edge="1" source="statusHold" target="setRedirect" value="Ja" parent="1"/>
+        <mxCell edge="1" source="statusHold" target="restore" value="Nei" parent="1"/>
+        <mxCell edge="1" source="setRedirect" target="end" parent="1"/>
+        <mxCell edge="1" source="restore" target="end" parent="1"/>
+        <mxCell edge="1" source="cleanupRemoved" target="cleanupStray" parent="1"/>
+        <mxCell edge="1" source="cleanupStray" target="end" parent="1"/>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

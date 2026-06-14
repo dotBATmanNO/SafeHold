@@ -1,0 +1,2 @@
+Scenario 03 – ZIP fjernet fra DNS
+Forventet: Restore + slett backup
